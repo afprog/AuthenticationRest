@@ -5,13 +5,13 @@ angular.module('angularFoundationApp')
     $scope.credential = {
         username: '',
         password: ''
-    }
+    };
         $scope.login = function (credential){
             console.log(credential);
             var jws = new KJUR.jws.JWS();
             var heder = '{"alg":"RS256"}';
             var sResult = null;
-            var payload = '{"iss":"joe", "exp":1300819380, "http://example.com/is_root":true}';
+            var payload = '{"iss":"joe5", "exp":1300819380, "http://example.com/is_root":true}';
             var RSAKey = "-----BEGIN RSA PRIVATE KEY-----" +
                 "MIIEogIBAAKCAQEA4qiw8PWs7PpnnC2BUEoDRcwXF8pq8XT1/3Hc3cuUJwX/otNe" +
                 "fr/Bomr3dtM0ERLN3DrepCXvuzEU5FcJVDUB3sI+pFtjjLBXD/zJmuL3Afg91J9p" +
@@ -39,9 +39,39 @@ angular.module('angularFoundationApp')
                 "T4mvpSeYDJkBD8Hxr3fB1YNDWNbgwrNPGZnUTBNhxIsNLPnV8WySiW57LqVXlggH" +
                 "vjFmyDdU5Hh6ma4q+BeAqbXZSJz0cfkBcBLCSe2gIJ/QJ3YJVQI=" +
                 "-----END RSA PRIVATE KEY-----";
+            var cert = "-----BEGIN CERTIFICATE-----" +
+                "MIIDMjCCAhqgAwIBAgIJAKMfG/B2MKd5MA0GCSqGSIb3DQEBBQUAMBoxCzAJBgNV" +
+                "BAYTAkpQMQswCQYDVQQKEwJ6MzAeFw0xMDA1MzEwNjE4MDhaFw0yMDA1MjgwNjE4" +
+                "MDhaMBoxCzAJBgNVBAYTAkpQMQswCQYDVQQKEwJ6MzCCASIwDQYJKoZIhvcNAQEB" +
+                "BQADggEPADCCAQoCggEBAOKosPD1rOz6Z5wtgVBKA0XMFxfKavF09f9x3N3LlCcF" +
+                "/6LTXn6/waJq93bTNBESzdw63qQl77sxFORXCVQ1Ad7CPqRbY4ywVw/8yZri9wH4" +
+                "PdSfae/fg5vuN3EesLissFSceQySHbMBeqEAw84cLvPXdlecdNmlwfS6nV5D8Ijt" +
+                "HkebP8R14AEpfoag3VS/YS6Hd4hmvZ1e3BJQm3JfFFVzTyZ0AH2oimsxfoQnZf7M" +
+                "qyIdCgmeaKYILEyYm6PKhVwZhuD5E+WG4RxNdcGCiC8GRUr2fYnXUT0CtwrYBYgZ" +
+                "121cFObeu7Z/aTIsx4MqYLHwaHqMga6U7nOHoEgqY7ECAwEAAaN7MHkwHQYDVR0O" +
+                "BBYEFKO4NcUDh3J5c7XD7j4pVXnzIfALMEoGA1UdIwRDMEGAFKO4NcUDh3J5c7XD" +
+                "7j4pVXnzIfALoR6kHDAaMQswCQYDVQQGEwJKUDELMAkGA1UEChMCejOCCQCjHxvw" +
+                "djCneTAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEBBQUAA4IBAQC8JdiwJF22/3nB" +
+                "IxJT/gXXN10cub6O+x9q64ls7dpGpBvbi4/lJgZOsZqoJiswU5WOKZ4MTOmMHe4W" +
+                "e/MHuhcjsgf9EHHYZQ1reBYi/l9mBBbYFGs0zSv1CyjbwkyF36nr/8sWdYf4ZtXQ" +
+                "nzTGvoa6oTOOTmmj3Bwl3CHwonvgAJUCHY/UmWFzH8Sf0dDW7iJBj+ZWfjuSlSQe" +
+                "2ninrEpfA4v2V1p3LOH+layZLDMJHkNCq8eoU1MbJi07cHxLWtlwliNOiRboaiYl" +
+                "1wtWR7ZY4HZCPeyb0tanf58rBQAXElaCF3fmfHrlpxoJBsQP1NbFrBs2haOIEZ4E" +
+                "K3V9/Bpi" +
+                "-----END CERTIFICATE-----";
+
+//            sResult = jws.generateJWSByP1PrvKey(heder, payload, RSAKey);
+//            var hJWSHSPass = "";
+//            sResult = KJUR.jws.JWS.sign(null, '{"alg":"HS256", "cty":"JWT"}', '{"age": 21}', hJWSHSPass);
+//            console.log(sResult);
+            var token = "eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjoiV2VsY29tZSB0byB0aGUgd29ybGQgb2YgQUVTIn0=.OTg5NGRiMWRjYjQ3NjY0ZTljOTA3ZjUwMTQzODNmOWI2Yzg5MmI3OTg2YWZkM2M3Y2FjMWZiZDI1ODRlZjFkMQ=="
+            var info = jws.verifyJWSByPemX509Cert(token,cert);
+            console.log(info);
+//            var certResult = jws.verifyJWSByPemX509Cert(sResult,cert);
+//            console.log(certResult);
+            console.log(angular.fromJson(jws.parsedJWS.payloadS).data);
 //            try {
-                sResult = jws.generateJWSByP1PrvKey(heder, payload, RSAKey);
-                console.log(sResult);
+
 //            } catch (ex) {
 //                console.log("Error: " + ex);
 //            }
